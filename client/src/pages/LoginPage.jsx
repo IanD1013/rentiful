@@ -1,10 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [redirect, setRedirect] = useState(false);
 
   async function loginUser(e) {
     e.preventDefault();
@@ -12,10 +13,15 @@ const LoginPage = () => {
     try {
       await axios.post('/login', { email, password });
       alert('Login successful.');
+      setRedirect(true);
       // eslint-disable-next-line no-unused-vars
     } catch (error) {
       alert('Login failed. Please try again later.');
     }
+  }
+
+  if (redirect) {
+    return <Navigate to="/" />;
   }
 
   return (
