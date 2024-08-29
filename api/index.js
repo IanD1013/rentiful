@@ -6,11 +6,13 @@ const bcrypt = require('bcryptjs');
 const User = require('./models/User');
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = 'secret';
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
 
 mongoose.connect(process.env.MONGO_URL);
@@ -47,6 +49,21 @@ app.post('/login', async (req, res) => {
     }
   } else {
     res.json('not found');
+  }
+});
+
+// Profile route
+app.get('/profile', async (req, res) => {
+  const { token } = req.cookies;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (error, cookieData) => {
+      if (error) throw error;
+
+      const { name, email, _id } = await User.findById(cookieData.id);
+      res.json({ name, email, _id });
+    });
+  } else {
+    res.json(null);
   }
 });
 
