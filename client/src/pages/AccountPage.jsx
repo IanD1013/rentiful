@@ -1,12 +1,17 @@
 import { useContext } from 'react';
 import { UserContext } from '../UserContext';
 import { Link, Navigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const AccountPage = () => {
   const { user, ready } = useContext(UserContext);
   let { subpage } = useParams();
 
   if (subpage === undefined) subpage = 'profile';
+
+  async function logout() {
+    await axios.post('/logout');
+  }
 
   if (!ready) return <div>Loading...</div>;
 
@@ -21,7 +26,7 @@ const AccountPage = () => {
 
   return (
     <div>
-      <nav className="w-full flex justify-center mt-8 gap-2">
+      <nav className="w-full flex justify-center mt-8 gap-2 mb-8">
         <Link className={linkClasses('profile')} to="/account">
           My profile
         </Link>
@@ -32,6 +37,15 @@ const AccountPage = () => {
           My accomodations
         </Link>
       </nav>
+
+      {subpage === 'profile' && (
+        <div className="text-center max-w-lg mx-auto">
+          Logged in as {user.name} ({user.email}) <br />
+          <button onClick={logout} className="primary max-w-sm mt-2">
+            Logout
+          </button>
+        </div>
+      )}
     </div>
   );
 };
