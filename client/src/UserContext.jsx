@@ -6,6 +6,8 @@ export const UserContext = createContext({});
 // eslint-disable-next-line react/prop-types
 export function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [ready, setReady] = useState(false);
+
   useEffect(() => {
     // without this when refresh the page we dont have the context anymore, this is
     // because when we load the app, we should grab login status. We have the cookie
@@ -14,9 +16,10 @@ export function UserContextProvider({ children }) {
     if (!user) {
       axios.get('/profile').then(({ data }) => {
         setUser(data);
+        setReady(true);
       });
     }
   }, []);
 
-  return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
+  return <UserContext.Provider value={{ user, setUser, ready }}>{children}</UserContext.Provider>;
 }
