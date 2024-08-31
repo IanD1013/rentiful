@@ -7,12 +7,16 @@ const User = require('./models/User');
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const imageDownloader = require('image-downloader');
+const multer = require('multer');
+const fs = require('fs');
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = 'secret';
 
 app.use(express.json());
 app.use(cookieParser());
+app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
 
 mongoose.connect(process.env.MONGO_URL);
@@ -70,6 +74,34 @@ app.get('/profile', async (req, res) => {
 // Logout route
 app.post('/logout', (req, res) => {
   res.cookie('token', '').json('logged out');
+});
+
+// Upload by link route
+app.post('/upload-by-link', async (req, res) => {
+  const { link } = req.body;
+  const newName = 'photo' + Date.now() + '.jpg';
+
+  await imageDownloader.image({
+    url: link,
+    dest: __dirname + '/uploads/' + newName,
+  });
+
+  res.json(newName);
+});
+
+// Upload from local device route
+const photosMiddleware = multer({ dest: 'uploads/' });
+app.post('/upload', photosMiddleware.array('photos', 100), (req, res) => {
+  const uploadedFiles = [];
+  for (const file of req.files) {
+    const { path, originalname } = file;
+    const parts = originalname.split('.');
+    const ext = parts[parts.length - 1];
+    const newPath = path + '.' + ext;
+    fs.renameSync(path, newPath);
+    uploadedFiles.push(newPath.replace('uploads\\', ''));
+  }
+  res.json(uploadedFiles);
 });
 
 app.listen(4000, () => {

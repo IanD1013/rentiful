@@ -1,4 +1,4 @@
-const Perks = () => {
+const Perks = ({ selected, onChange }) => {
   return (
     <div className="grid mt-2 gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
       <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">

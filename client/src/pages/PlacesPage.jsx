@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Perks from '../components/Perks';
+import axios from 'axios';
 
 const PlacesPage = () => {
   const { action } = useParams();
@@ -33,6 +34,24 @@ const PlacesPage = () => {
     );
   }
 
+  async function addPhotoByLink(e) {
+    e.preventDefault();
+    const { data: filename } = await axios.post('/upload-by-link', { link: photoLink });
+    setAddedPhotos([...addedPhotos, filename]);
+    setPhotoLink('');
+  }
+
+  async function uploadPhoto(e) {
+    const files = e.target.files;
+    const formData = new FormData();
+    for (const file of files) {
+      formData.append('photos', file);
+    }
+
+    const { data: filenames } = await axios.post('/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+    setAddedPhotos([...addedPhotos, ...filenames]);
+  }
+
   return (
     <div>
       {action !== 'new' && (
@@ -58,10 +77,21 @@ const PlacesPage = () => {
             {preInput('Photos', 'More = better')}
             <div className="flex gap-2">
               <input value={photoLink} onChange={(e) => setPhotoLink(e.target.value)} type="text" placeholder="Add using a link ...jpeg" />
-              <button className="bg-gray-200 px-4 rounded-2xl">Add&nbsp;photo</button>
+              <button onClick={addPhotoByLink} className="bg-gray-200 px-4 rounded-2xl">
+                Add&nbsp;photo
+              </button>
             </div>
-            <div className="mt-2 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-              <button className="flex gap-1 justify-center border bg-transparent rounded-2xl p-8 text-2xl text-gray-600">
+
+            <div className="mt-2 grid gap-2 grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+              {addedPhotos.length > 0 &&
+                addedPhotos.map((link) => (
+                  <div className="h-32 flex" key={link}>
+                    <img className="rounded-2xl w-full object-cover" src={'http://localhost:4000/uploads/' + link} />
+                  </div>
+                ))}
+
+              <label className="h-32 cursor-pointer flex items-center gap-1 justify-center border bg-transparent rounded-2xl p-2 text-2xl text-gray-600">
+                <input type="file" className="hidden" onChange={uploadPhoto} multiple />
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-8">
                   <path
                     strokeLinecap="round"
@@ -70,7 +100,7 @@ const PlacesPage = () => {
                   />
                 </svg>
                 Upload
-              </button>
+              </label>
             </div>
 
             {preInput('Description', 'Description of the place')}
