@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import Perks from '../components/Perks';
 import PhotosUploader from '../components/PhotosUploader';
+import axios from 'axios';
 
 const PlacesPage = () => {
   const { action } = useParams();
@@ -15,6 +16,8 @@ const PlacesPage = () => {
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
   const [maxGuests, setMaxGuests] = useState(1);
+
+  const [redirect, setRedirect] = useState('');
 
   function inputHeader(text) {
     return <h2 className="text-2xl mt-4">{text}</h2>;
@@ -33,6 +36,19 @@ const PlacesPage = () => {
     );
   }
 
+  async function addNewPlace(e) {
+    e.preventDefault();
+
+    const placeData = { title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests };
+    await axios.post('/places', placeData);
+
+    setRedirect('/account/places');
+  }
+
+  if (redirect) {
+    return <Navigate to={redirect} />;
+  }
+
   return (
     <div>
       {action !== 'new' && (
@@ -48,7 +64,7 @@ const PlacesPage = () => {
 
       {action === 'new' && (
         <div>
-          <form>
+          <form onSubmit={addNewPlace}>
             {preInput('Title', 'Title for your place, should be short and catchy as in advertisement')}
             <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="title, for example: My lovely apartment" />
 
