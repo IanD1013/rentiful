@@ -143,6 +143,32 @@ app.get('/places/:id', async (req, res) => {
   res.json(await Place.findById(id));
 });
 
+// Update place route
+app.put('/places', async (req, res) => {
+  const { token } = req.cookies;
+  const { id, title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests } = req.body;
+  jwt.verify(token, jwtSecret, {}, async (error, cookieData) => {
+    if (error) throw error;
+
+    const placeDoc = await Place.findById(id);
+    if (cookieData.id === placeDoc.owner.toString()) {
+      placeDoc.set({
+        title,
+        address,
+        photos: addedPhotos,
+        description,
+        perks,
+        extraInfo,
+        checkIn,
+        checkOut,
+        maxGuests,
+      });
+      await placeDoc.save();
+      res.json('ok');
+    }
+  });
+});
+
 app.listen(4000, () => {
   console.log('Server is running on port 4000');
 });

@@ -52,12 +52,19 @@ const PlacesFormPage = () => {
     );
   }
 
-  async function addNewPlace(e) {
+  async function savePlace(e) {
     e.preventDefault();
-
     const placeData = { title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests };
-    await axios.post('/places', placeData);
-    setRedirect(true);
+
+    if (id) {
+      // update
+      await axios.put('/places', { id, ...placeData });
+      setRedirect(true);
+    } else {
+      // create
+      await axios.post('/places', placeData);
+      setRedirect(true);
+    }
   }
 
   if (redirect) {
@@ -68,7 +75,7 @@ const PlacesFormPage = () => {
     <div>
       <AccountNav />
 
-      <form onSubmit={addNewPlace}>
+      <form onSubmit={savePlace}>
         {preInput('Title', 'Title for your place, should be short and catchy as in advertisement')}
         <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="title, for example: My lovely apartment" />
 
