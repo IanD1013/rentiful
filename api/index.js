@@ -11,6 +11,7 @@ const multer = require('multer');
 const fs = require('fs');
 const User = require('./models/User');
 const Place = require('./models/Place');
+const Booking = require('./models/Booking');
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = 'secret';
@@ -174,6 +175,21 @@ app.put('/places', async (req, res) => {
 // Get all places route
 app.get('/places', async (req, res) => {
   res.json(await Place.find());
+});
+
+// Handle booking
+app.post('/bookings', async (req, res) => {
+  const { place, checkIn, checkOut, numberOfGuest, name, phone, price } = req.body;
+  const doc = await Booking.create({
+    place,
+    checkIn,
+    checkOut,
+    numberOfGuest,
+    name,
+    phone,
+    price,
+  });
+  res.json(doc);
 });
 
 app.listen(4000, () => {

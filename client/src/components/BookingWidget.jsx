@@ -1,17 +1,31 @@
 import { useState } from 'react';
 import { differenceInCalendarDays } from 'date-fns';
-/* eslint-disable react/prop-types */
+import axios from 'axios';
+import { Navigate } from 'react-router-dom';
 
+/* eslint-disable react/prop-types */
 const BookingWidget = ({ place }) => {
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
   const [numberOfGuests, setNumberOfGuests] = useState(1);
   const [name, setName] = useState('');
-  const [mobile, setMobile] = useState('');
+  const [phone, setPhone] = useState('');
+  const [redirect, setRedirect] = useState('');
 
   let numberOfNights = 0;
   if (checkIn && checkOut) {
     numberOfNights = differenceInCalendarDays(new Date(checkOut), new Date(checkIn));
+  }
+
+  async function bookThisPlace() {
+    const data = { price: numberOfNights * place.price, place: place._id, checkIn, checkOut, numberOfGuests, name, phone };
+    const response = await axios.post('/bookings', data);
+    const bookingId = response.data._id;
+    setRedirect(`/account/bookings/${bookingId}`);
+  }
+
+  if (redirect) {
+    return <Navigate to={redirect} />;
   }
 
   return (
@@ -41,14 +55,14 @@ const BookingWidget = ({ place }) => {
               <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
 
               <label>Phone number:</label>
-              <input type="tel" value={mobile} onChange={(e) => setMobile(e.target.value)} />
+              <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
             </div>
           )}
         </div>
       </div>
-      <button className="primary mt-4">
+      <button onClick={bookThisPlace} className="primary mt-4">
         Book this place
-        {numberOfNights > 0 && <span>${numberOfNights * place.price}</span>}
+        {numberOfNights > 0 && <span className="ml-2">(${numberOfNights * place.price})</span>}
       </button>
     </div>
   );
