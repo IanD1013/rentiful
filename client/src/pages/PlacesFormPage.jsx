@@ -17,12 +17,13 @@ const PlacesFormPage = () => {
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
   const [maxGuests, setMaxGuests] = useState(1);
+  const [price, setPrice] = useState(100);
   const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
     if (!id) return;
     axios.get('/places/' + id).then((response) => {
-      const { title, address, photos, description, perks, extraInfo, checkIn, checkOut, maxGuests } = response.data;
+      const { title, address, photos, description, perks, extraInfo, checkIn, checkOut, maxGuests, price } = response.data;
       setTitle(title);
       setAddress(address);
       setAddedPhotos(photos);
@@ -32,6 +33,7 @@ const PlacesFormPage = () => {
       setCheckIn(checkIn);
       setCheckOut(checkOut);
       setMaxGuests(maxGuests);
+      setPrice(price);
     });
   }, [id]);
 
@@ -54,7 +56,7 @@ const PlacesFormPage = () => {
 
   async function savePlace(e) {
     e.preventDefault();
-    const placeData = { title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests };
+    const placeData = { title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests, price };
 
     if (id) {
       // update
@@ -95,18 +97,25 @@ const PlacesFormPage = () => {
         <textarea value={extraInfo} onChange={(e) => setExtraInfo(e.target.value)} />
 
         {preInput('Check in & out times', 'Add check in and out times, remember to have some time window for cleaning the room between guests')}
-        <div className="grid gap-2 sm:grid-cols-3">
+        <div className="grid gap-2 grid-cols-2 md:grid-cols-4">
           <div>
             <h3 className="mt-2 -mb-1">Check in time</h3>
             <input type="text" value={checkIn} onChange={(e) => setCheckIn(e.target.value)} placeholder="14" />
           </div>
+
           <div>
             <h3 className="mt-2 -mb-1">Check out time</h3>
             <input type="text" value={checkOut} onChange={(e) => setCheckOut(e.target.value)} placeholder="11" />
           </div>
+
           <div>
             <h3 className="mt-2 -mb-1">Max number of guests</h3>
             <input type="number" value={maxGuests} onChange={(e) => setMaxGuests(e.target.value)} />
+          </div>
+
+          <div>
+            <h3 className="mt-2 -mb-1">Price per night</h3>
+            <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
           </div>
         </div>
 

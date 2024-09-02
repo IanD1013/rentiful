@@ -108,7 +108,7 @@ app.post('/upload', photosMiddleware.array('photos', 100), (req, res) => {
 // Create new place route
 app.post('/places', async (req, res) => {
   const { token } = req.cookies;
-  const { title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests } = req.body;
+  const { title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests, price } = req.body;
   jwt.verify(token, jwtSecret, {}, async (error, cookieData) => {
     if (error) throw error;
     const placeDoc = await Place.create({
@@ -122,13 +122,14 @@ app.post('/places', async (req, res) => {
       checkIn,
       checkOut,
       maxGuests,
+      price,
     });
     res.json(placeDoc);
   });
 });
 
-// Get all places route
-app.get('/places', async (req, res) => {
+// Get all places for a user route
+app.get('/user-places', async (req, res) => {
   const { token } = req.cookies;
   jwt.verify(token, jwtSecret, {}, async (error, cookieData) => {
     if (error) throw error;
@@ -146,7 +147,7 @@ app.get('/places/:id', async (req, res) => {
 // Update place route
 app.put('/places', async (req, res) => {
   const { token } = req.cookies;
-  const { id, title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests } = req.body;
+  const { id, title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests, price } = req.body;
   jwt.verify(token, jwtSecret, {}, async (error, cookieData) => {
     if (error) throw error;
 
@@ -162,11 +163,17 @@ app.put('/places', async (req, res) => {
         checkIn,
         checkOut,
         maxGuests,
+        price,
       });
       await placeDoc.save();
       res.json('ok');
     }
   });
+});
+
+// Get all places route
+app.get('/places', async (req, res) => {
+  res.json(await Place.find());
 });
 
 app.listen(4000, () => {
