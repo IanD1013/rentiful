@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
-import { differenceInCalendarDays } from 'date-fns';
 import axios from 'axios';
-import { Navigate } from 'react-router-dom';
+import { differenceInCalendarDays } from 'date-fns';
+import { useContext, useEffect, useState } from 'react';
+import { Link, Navigate } from 'react-router-dom';
 import { UserContext } from '../UserContext';
 
 /* eslint-disable react/prop-types */
@@ -79,9 +79,9 @@ const BookingWidget = ({ place }) => {
 
       {!user && (
         <div className="text-center mt-4">
-          <button onClick={() => (window.location.href = '/login')} className="primary mt-4">
-            Login to book this place
-          </button>
+          <Link to={'/login'}>
+            <button className="primary mt-4">Login to book this place</button>
+          </Link>
         </div>
       )}
     </div>
