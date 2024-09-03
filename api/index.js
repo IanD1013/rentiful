@@ -179,8 +179,11 @@ app.get('/places', async (req, res) => {
 
 // Handle booking
 app.post('/bookings', async (req, res) => {
+  const cookieData = await getUserDataFromReq(req);
+
   const { place, checkIn, checkOut, numberOfGuest, name, phone, price } = req.body;
   const doc = await Booking.create({
+    user: cookieData.id,
     place,
     checkIn,
     checkOut,
@@ -190,6 +193,22 @@ app.post('/bookings', async (req, res) => {
     price,
   });
   res.json(doc);
+});
+
+function getUserDataFromReq(req) {
+  return new Promise((resolve, reject) => {
+    jwt.verify(req.cookies.token, jwtSecret, {}, async (error, cookieData) => {
+      if (error) reject(error);
+
+      resolve(cookieData);
+    });
+  });
+}
+
+// Get all bookings for a user route
+app.get('/bookings', async (req, res) => {
+  const cookieData = await getUserDataFromReq(req);
+  res.json(await Booking.find({ user: cookieData.id }).populate('place'));
 });
 
 app.listen(4000, () => {
