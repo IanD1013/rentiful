@@ -69,10 +69,21 @@ const BookingWidget = ({ place }) => {
           )}
         </div>
       </div>
-      <button onClick={bookThisPlace} className="primary mt-4">
-        Book this place
-        {numberOfNights > 0 && <span className="ml-2">(${numberOfNights * place.price})</span>}
-      </button>
+
+      {user && (
+        <button onClick={bookThisPlace} className="primary mt-4">
+          Book this place
+          {numberOfNights > 0 && <span className="ml-2">(${numberOfNights * place.price})</span>}
+        </button>
+      )}
+
+      {!user && (
+        <div className="text-center mt-4">
+          <button onClick={() => (window.location.href = '/login')} className="primary mt-4">
+            Login to book this place
+          </button>
+        </div>
+      )}
     </div>
   );
 };
