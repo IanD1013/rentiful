@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
+import Image from './Image';
 
 const PlaceGallary = ({ place }) => {
   const [showAllPhotos, setShowAllPhotos] = useState(false);
@@ -23,7 +24,7 @@ const PlaceGallary = ({ place }) => {
           {place?.photos?.length > 0 &&
             place.photos.map((photo) => (
               <div key={photo} className="w-full h-full">
-                <img className="w-full h-full object-cover" src={'http://localhost:4000/uploads/' + photo} alt="" />
+                <Image className="w-full h-full object-cover" src={photo} alt="" />
               </div>
             ))}
         </div>
@@ -36,32 +37,17 @@ const PlaceGallary = ({ place }) => {
         <div>
           {place.photos?.[0] && (
             <div>
-              <img
-                onClick={() => setShowAllPhotos(true)}
-                className="aspect-square cursor-pointer object-cover"
-                src={'http://localhost:4000/uploads/' + place.photos[0]}
-                alt=""
-              />
+              <Image onClick={() => setShowAllPhotos(true)} className="aspect-square cursor-pointer object-cover" src={place.photos[0]} alt="" />
             </div>
           )}
         </div>
         <div className="grid">
           {place.photos?.[1] && (
-            <img
-              onClick={() => setShowAllPhotos(true)}
-              className="aspect-square cursor-pointer object-cover"
-              src={'http://localhost:4000/uploads/' + place.photos[1]}
-              alt=""
-            />
+            <Image onClick={() => setShowAllPhotos(true)} className="aspect-square cursor-pointer object-cover" src={place.photos[1]} alt="" />
           )}
           <div className="overflow-hidden">
             {place.photos?.[2] && (
-              <img
-                onClick={() => setShowAllPhotos(true)}
-                className="aspect-square cursor-pointer object-cover relative top-2"
-                src={'http://localhost:4000/uploads/' + place.photos[2]}
-                alt=""
-              />
+              <Image onClick={() => setShowAllPhotos(true)} className="aspect-square cursor-pointer object-cover relative top-2" src={place.photos[2]} alt="" />
             )}
           </div>
         </div>

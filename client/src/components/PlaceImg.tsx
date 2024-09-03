@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from './Image';
 
 const PlaceImg = ({ place, index = 0, className = '' }) => {
   if (!place.photos?.length) return '';
@@ -7,7 +8,7 @@ const PlaceImg = ({ place, index = 0, className = '' }) => {
     className = 'object-cover';
   }
 
-  return <img className={className} src={'http://localhost:4000/uploads/' + place.photos[index]} />;
+  return <Image className={className} src={place.photos[index]} />;
 };
 
 export default PlaceImg;
