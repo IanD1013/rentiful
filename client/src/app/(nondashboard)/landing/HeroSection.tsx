@@ -7,7 +7,7 @@ import Image from 'next/image';
 
 const HeroSection = () => {
   return (
-    <div className="h-screen">
+    <div className="relative h-screen">
       <Image src="/landing-splash.jpg" alt="Rentiful Rental Platform Hero Section" fill className="object-cover object-center" priority />
       <div className="absolute inset-0 bg-black bg-opacity-60"></div>
       <motion.div
