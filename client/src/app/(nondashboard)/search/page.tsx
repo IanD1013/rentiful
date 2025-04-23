@@ -18,6 +18,26 @@ const SearchPage = () => {
     (state) => state.global.isFiltersFullOpen
   );
 
+  useEffect(() => {
+    const initialFilters = Array.from(searchParams.entries()).reduce(
+      (acc: any, [key, value]) => {
+        if (key === "priceRange" || key === "squareFeet") {
+          acc[key] = value.split(",").map((v) => (v === "" ? null : Number(v)));
+        } else if (key === "coordinates") {
+          acc[key] = value.split(",").map(Number);
+        } else {
+          acc[key] = value === "any" ? null : value;
+        }
+
+        return acc;
+      },
+      {}
+    );
+
+    const cleanedFilters = cleanParams(initialFilters);
+    dispatch(setFilters(cleanedFilters));
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <div
       className="w-full mx-auto px-5 flex flex-col"
@@ -34,7 +54,7 @@ const SearchPage = () => {
               : "w-0 opacity-0 invisible"
           }`}
         >
-          {/* <FiltersFull /> */}
+          <FiltersFull />
         </div>
         {/* <Map /> */}
         <div className="basis-4/12 overflow-y-auto">{/* <Listings /> */}</div>
