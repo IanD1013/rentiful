@@ -17,7 +17,7 @@ export const api = createApi({
     },
   }),
   reducerPath: "api",
-  tagTypes: ["Managers", "Tenants", "Properties"],
+  tagTypes: ["Managers", "Tenants", "Properties", "PropertyDetails"],
   endpoints: (build) => ({
     getAuthUser: build.query<User, void>({
       // get user details from our backend
@@ -98,6 +98,11 @@ export const api = createApi({
           : [{ type: "Properties", id: "LIST" }],
     }),
 
+    getProperty: build.query<Property, number>({
+      query: (id) => `properties/${id}`,
+      providesTags: (result, error, id) => [{ type: "PropertyDetails", id }],
+    }),
+
     /****************************/
     /* tenant related endpoints */
     /****************************/
@@ -166,6 +171,7 @@ export const api = createApi({
 export const {
   useGetAuthUserQuery,
   useGetPropertiesQuery,
+  useGetPropertyQuery,
   useGetTenantQuery,
   useUpdateTenantSettingsMutation,
   useAddFavoritePropertyMutation,
