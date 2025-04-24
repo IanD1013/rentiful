@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import ImagePreviews from "./ImagePreviews";
 import PropertyOverview from "./PropertyOverview";
 import PropertyDetails from "./PropertyDetails";
+import PropertyLocation from "./PropertyLocation";
 
 const SingleListing = () => {
   const { id } = useParams();
@@ -20,6 +21,7 @@ const SingleListing = () => {
         <div className="order-2 md:order-1">
           <PropertyOverview propertyId={propertyId} />
           <PropertyDetails propertyId={propertyId} />
+          <PropertyLocation propertyId={propertyId} />
         </div>
       </div>
     </div>
