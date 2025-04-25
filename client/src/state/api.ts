@@ -172,6 +172,17 @@ export const api = createApi({
     /*****************************/
     /* manager related endpoints */
     /*****************************/
+    getManagerProperties: build.query<Property[], string>({
+      query: (cognitoId) => `managers/${cognitoId}/properties`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Properties" as const, id })),
+              { type: "Properties", id: "LIST" },
+            ]
+          : [{ type: "Properties", id: "LIST" }],
+    }),
+
     updateManagerSettings: build.mutation<
       Manager,
       { cognitoId: string } & Partial<Manager>
@@ -208,6 +219,7 @@ export const {
   useUpdateTenantSettingsMutation,
   useAddFavoritePropertyMutation,
   useRemoveFavoritePropertyMutation,
+  useGetManagerPropertiesQuery,
   useUpdateManagerSettingsMutation,
   useGetLeasesQuery,
   useGetPaymentsQuery,
