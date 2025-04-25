@@ -203,6 +203,11 @@ export const api = createApi({
       providesTags: ["Leases"],
     }),
 
+    getPropertyLeases: build.query<Lease[], number>({
+      query: (propertyId) => `properties/${propertyId}/leases`,
+      providesTags: ["Leases"],
+    }),
+
     getPayments: build.query<Payment[], number>({
       query: (leaseId) => `leases/${leaseId}/payments`,
       providesTags: ["Payments"],
@@ -222,5 +227,6 @@ export const {
   useGetManagerPropertiesQuery,
   useUpdateManagerSettingsMutation,
   useGetLeasesQuery,
+  useGetPropertyLeasesQuery,
   useGetPaymentsQuery,
 } = api;
