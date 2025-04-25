@@ -265,6 +265,15 @@ export const api = createApi({
       }),
       invalidatesTags: ["Applications", "Leases"],
     }),
+
+    createApplication: build.mutation<Application, Partial<Application>>({
+      query: (body) => ({
+        url: `applications`,
+        method: "POST",
+        body: body,
+      }),
+      invalidatesTags: ["Applications"],
+    }),
   }),
 });
 
@@ -285,4 +294,5 @@ export const {
   useGetPaymentsQuery,
   useGetApplicationsQuery,
   useUpdateApplicationStatusMutation,
+  useCreateApplicationMutation,
 } = api;
