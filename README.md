@@ -2,7 +2,7 @@
 
 Rentiful is an enterprise-level rental property management platform that connects property managers with potential tenants. The application features a modern UI built with shadcn/ui components, responsive design, and a robust backend API powered by Express.js and PostgreSQL.
 
-## Screenshots
+## 📸 Screenshots
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/18e8d9c7-5478-432a-9e13-aa682b718603" alt="Landing Page" width="60%">
@@ -10,7 +10,10 @@ Rentiful is an enterprise-level rental property management platform that connect
   <img src="https://github.com/user-attachments/assets/11c9731a-a8e0-447e-9820-5349d346fcba" alt="Search Page" width="100%">
 </div>
 
-## Features
+## 📚 Additional Design Documentation
+For more detailed design documentation including app mockups, ER diagrams, authentication flow, property search logic, and AWS architecture, please visit [design documentation board](https://miro.com/app/board/uXjVI9ClQw4=/?share_link_id=672383767333).
+
+## ✨ Features
 
 ### For Tenants
 - **Property Search**: Browse and search for rental properties with advanced filtering
@@ -32,7 +35,7 @@ Rentiful is an enterprise-level rental property management platform that connect
 - **Database Integration**: PostgreSQL database with Prisma ORM and PostGIS for geospatial queries
 - **Authentication**: Secure login and registration using AWS Cognito
 
-## Tech Stack
+## 🚀 Tech Stack
 
 ### Frontend
 - **Framework**: Next.js 15
@@ -54,7 +57,7 @@ Rentiful is an enterprise-level rental property management platform that connect
 - **Security**: Helmet, CORS
 - **Logging**: Morgan
 
-## Getting Started
+## 🚦 Getting Started
 
 ### Prerequisites
 - Node.js (latest version)
@@ -103,7 +106,7 @@ Rentiful is an enterprise-level rental property management platform that connect
    npm run dev
    ```
 
-## Project Structure
+## 📁 Project Structure
 
 ### Frontend
 - **app/**: Next.js app router structure
@@ -126,6 +129,13 @@ Rentiful is an enterprise-level rental property management platform that connect
   - **seedData/**: Data for seeding the database
   - **seed.ts**: Script to populate the database with initial data
 
-## Deployment
+## 🚀 Deployment
 
-The application can be deployed to AWS EC2. See [EC2 Setup Instructions](server/aws-ec2-instructions.md) for detailed deployment steps.
+The application is deployed using various AWS services:
+- Frontend: Deployed on AWS Amplify
+- Backend: Deployed on AWS EC2 instance
+- Database: Deployed on Amazon RDS
+
+The deployed application can be accessed at [Rentiful](https://main.d1393igd452c5n.amplifyapp.com/).
+
+For detailed EC2 setup instructions, see [EC2 Setup Instructions](server/aws-ec2-instructions.md).
