@@ -7,7 +7,7 @@ Rentiful is an enterprise-level rental property management platform that connect
 <div align="center">
   <table>
     <tr>
-      <td><img src="https://via.placeholder.com/600x400/4a5568/ffffff?text=Property+Search" alt="Property Search" width="100%"></td>
+      <td><img src="https://github.com/user-attachments/assets/18e8d9c7-5478-432a-9e13-aa682b718603" alt="Landing Page" width="100%"></td>
       <td><img src="https://via.placeholder.com/600x400/4a5568/ffffff?text=Property+Details" alt="Property Details" width="100%"></td>
     </tr>
     <tr>
