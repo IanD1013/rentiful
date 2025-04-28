@@ -10,6 +10,8 @@ Rentiful is an enterprise-level rental property management platform that connect
   <img src="https://github.com/user-attachments/assets/11c9731a-a8e0-447e-9820-5349d346fcba" alt="Search Page" width="100%">
 </div>
 
+**Note:** The listing dummy data is currently populated around the Los Angeles area. To view the full functionality of the search page, please type **"Los Angeles"** in the search bar, or visit [this direct link](https://main.d1393igd452c5n.amplifyapp.com/search).
+
 ## 📚 Additional Design Documentation
 For more detailed design documentation including app mockups, ER diagrams, authentication flow, property search logic, and AWS architecture, please visit [design documentation board](https://miro.com/app/board/uXjVI9ClQw4=/?share_link_id=672383767333).
 
